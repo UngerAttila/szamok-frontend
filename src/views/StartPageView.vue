@@ -64,8 +64,8 @@
         <q-form class="q-gutter-md">
           <h4 class="text-center q-mt-lg q-mb-none">A feladat megoldása</h4>
           <p>2. feladat. A feladatban {{ dataN.length }} kérdés szerepel.</p>
-          <p>Matek kérdések {{ math() }}</p>
-          <p>Témakörök listája:</p>
+          <p>3. feladat. Matek kérdések {{ math() }}száma</p>
+          <p>5. feldat. Témakörök listája:</p>
           <span
             v-for="(item, index) in temakorokStore.dataN.sort((a, b) => a.nev!.localeCompare(b.nev!))"
             :key="index"
@@ -73,7 +73,8 @@
             {{ item.nev }}
             <br />
           </span>
-          <p>5. feladat. A legagyobb válasz {{ max() }} a legkisebb válasz pedig {{ min() }}.</p>
+          <p>4. feladat. A legnagyobb válasz {{ max() }} a legkisebb válasz pedig {{ min() }}.</p>
+          <p>6. feladat.</p>
           <p>7. feladat.</p>
         </q-form>
       </div>
