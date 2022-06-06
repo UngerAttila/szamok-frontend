@@ -1,37 +1,32 @@
 <script setup lang="ts">
-  import { useUtcakStore } from "../store/utcakStore";
+  import { usetemakorokStore } from "../store/temakorokStore";
   import { storeToRefs } from "pinia";
   import router from "src/router";
   import { useUsersStore } from "../store/usersStore";
+  //import { usetemakerdesekStore } from "../store/temakorokStore";
 
-  const utcakStore = useUtcakStore();
+  const temakorokStore = usetemakorokStore();
   const usersStore = useUsersStore();
 
-  const { isLoading, dataN, pagination, selected } = storeToRefs(utcakStore);
+  const { isLoading, dataN, selected } = storeToRefs(temakorokStore);
 
   watch(isLoading, () => {
-    onRequest({
-      pagination: pagination.value,
-    });
+    temakorokStore.getAll();
   });
 
   function deleteRecord(): void {
-    utcakStore.deleteById();
+    temakorokStore.deleteById();
   }
 
   function newRecord(): void {
-    utcakStore.data = {};
-    router.push("/newStreet");
-  }
-
-  function filterChanged(): void {
-    selected.value = [];
+    temakorokStore.data = {};
+    router.push("/newCategory");
   }
 
   function editRecord(): void {
-    utcakStore.data = selected.value[0];
-    utcakStore.getById();
-    router.push("/editStreet");
+    temakorokStore.data = selected.value[0];
+    temakorokStore.getById();
+    router.push("/editCategory");
   }
 
   function clearSelection(): void {
@@ -40,28 +35,13 @@
 
   const columns: any[] = [
     { name: "_id", label: "_id", field: "_id", align: "left", sortable: true },
-    { name: "adoszam", label: "Adószám", field: "adoszam", align: "left", sortable: true },
-    {
-      name: "adosav",
-      label: "Sáv",
-      field: (row: any) => row.adosav.sav,
-      align: "center",
-    },
-    {
-      name: "ado",
-      label: "Adó",
-      field: (row: any) => row.adosav.ado,
-      align: "center",
-    },
-    { name: "utca", label: "Utca", field: "utca", align: "left", sortable: true },
-    { name: "hazszam", label: "Házszám", field: "hazszam", align: "left", sortable: true },
-    { name: "terulet", label: "Terület", field: "terulet", align: "left", sortable: true },
+    { name: "nev", label: "Témakör", field: "nev", align: "left", sortable: true },
   ];
-
+  /*
   function onRequest(props: any) {
     const { page, rowsPerPage, sortBy, descending, filter } = props.pagination;
 
-    utcakStore.fetchPaginatedStreets({
+    temakorokStore.fetchPaginatedCategorys({
       offset: (page - 1) * rowsPerPage,
       limit: rowsPerPage,
       order: sortBy,
@@ -75,11 +55,9 @@
     pagination.value.sortBy = sortBy;
     pagination.value.descending = descending;
   }
-
+*/
   onMounted(() => {
-    onRequest({
-      pagination: pagination.value,
-    });
+    temakorokStore.getAll();
   });
 </script>
 
@@ -87,33 +65,16 @@
   <q-page>
     <div class="q-pa-md">
       <q-table
-        v-model:pagination="pagination"
         v-model:selected="selected"
         binary-state-sort
         :columns="columns"
         dense
-        :filter="pagination.filter"
         row-key="_id"
         :rows="dataN"
         selection="multiple"
-        title="Utcák"
+        title="Témakörök"
         wrap-cells
-        @request="onRequest"
-      >
-        <template #top-right>
-          <q-input
-            v-model="pagination.filter"
-            debounce="300"
-            dense
-            placeholder="Search"
-            @update:model-value="filterChanged()"
-          >
-            <template #append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
-        </template>
-      </q-table>
+      ></q-table>
       <!-- Buttons:  -->
       <div class="row justify-center q-ma-sm q-gutter-sm">
         <q-btn v-show="selected.length != 0" color="orange" no-caps @click="clearSelection">

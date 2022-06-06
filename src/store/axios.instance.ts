@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const $axios = axios.create({
-  baseURL: "https://epitmenyado-backend.herokuapp.com/",
-  withCredentials: true,
+  baseURL: "https://szamok-backend.herokuapp.com/",
 });
 
 export default $axios;

@@ -28,7 +28,7 @@
 </script>
 
 <template>
-  <q-btn color="red" icon="mdi-content-save" :label="title" no-caps @click="writeTextToFile()" />
+  <q-btn color="red" icon="mdi-content-temae" :label="title" no-caps @click="writeTextToFile()" />
   <!-- <label class="text-writer">
     {{ title }}
     <input type="button" @click="writeTextToFile()" />

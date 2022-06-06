@@ -11,57 +11,53 @@ Notify.setDefaults({
   progress: true,
 });
 
-interface IPaginatedParams {
+/*interface IPaginatedParams {
   offset: number;
   limit: string;
   order: string;
   sort: string;
   keyword?: string;
-}
+}*/
 
 interface IFields {
-  _id?: number; // PK
-  adosav?: number | { sav: string; ado: number; hatar: number }; // FK
-  adoszam?: number;
-  utca?: string;
-  hazszam?: string;
-  terulet?: number;
+  _id?: number;
+  nev?: string;
 }
 
-interface IPagination {
+/*interface IPagination {
   sortBy?: string;
   descending?: false;
   page?: number;
   rowsPerPage?: number;
   rowsNumber?: number;
   filter?: string;
-}
+}*/
 
 interface IState {
   dataN: Array<IFields>; // store documents (records) after get method(s)
-  dataNfiltered: Array<IFields>;
+  //dataNfiltered: Array<IFields>;
   data: IFields; // temporary object for create, edit and delete method
   dataOld: IFields; // temporary object for patch method (store data here before edit)
   selected: Array<IFields>;
   isLoading: boolean;
-  pagination: IPagination;
+  //pagination: IPagination;
 }
 
-export const useUtcakStore = defineStore({
-  id: "utcakStore",
+export const usetemakorokStore = defineStore({
+  id: "temakorokStore",
   state: (): IState => ({
     dataN: [],
-    dataNfiltered: [],
+    //dataNfiltered: [],
     data: {},
     dataOld: {},
     selected: [],
     isLoading: false,
-    pagination: {
-      sortBy: "utca",
+    /*pagination: {
+      sortBy: "kerdes",
       descending: false,
       rowsPerPage: 10,
       filter: "",
-    },
+    },*/
   }),
   getters: {},
   actions: {
@@ -69,7 +65,7 @@ export const useUtcakStore = defineStore({
       Loading.show();
       this.dataN = [];
       $axios
-        .get("api/utcak")
+        .get("api/temakorok")
         .then((res) => {
           Loading.hide();
           if (res && res.data) {
@@ -89,7 +85,7 @@ export const useUtcakStore = defineStore({
       if (this.data && this.data._id) {
         Loading.show();
         $axios
-          .get(`api/utcak/${this.data._id}`)
+          .get(`api/temakorok/${this.data._id}`)
           .then((res) => {
             Loading.hide();
             if (res && res.data) {
@@ -106,17 +102,17 @@ export const useUtcakStore = defineStore({
           });
       }
     },
-
-    async fetchPaginatedStreets(params: IPaginatedParams): Promise<void> {
+    /*
+    async fetchPaginatedCategorys(params: IPaginatedParams): Promise<void> {
       Loading.show();
       $axios
         .get(
-          `api/utcak/${params.offset}/${params.limit}/${params.order}/${params.sort}/${params.keyword}`
+          `api/temakorok/${params.offset}/${params.limit}/${params.order}/${params.sort}/${params.keyword}`
         )
         .then((res) => {
           if (res && res.data) {
-            this.dataN = res.data.utcak;
-            // this.numberOfStreets = res.data.count; // ez ide majd nem kell
+            this.dataN = res.data.temakorok;
+            this.numberOfCategorys = res.data.count; // ez ide majd nem kell
             this.pagination.rowsNumber = res.data.count;
           }
           Loading.hide();
@@ -129,7 +125,7 @@ export const useUtcakStore = defineStore({
           });
         });
     },
-
+*/
     async editById(): Promise<void> {
       if (this.data && this.data._id) {
         const diff: any = {};
@@ -149,7 +145,7 @@ export const useUtcakStore = defineStore({
         Loading.show();
         this.isLoading = true;
         $axios
-          .patch(`api/utcak/${this.data._id}`, diff)
+          .patch(`api/temakorok/${this.data._id}`, diff)
           .then((res) => {
             Loading.hide();
             if (res && res.data) {
@@ -159,7 +155,7 @@ export const useUtcakStore = defineStore({
                 message: `Document with id=${res.data._id} has been edited successfully!`,
                 color: "positive",
               });
-              router.push("/qtable");
+              router.push("/qtableCategory");
             }
           })
           .catch((error) => {
@@ -178,7 +174,7 @@ export const useUtcakStore = defineStore({
       if (this.selected.length) {
         const id_for_delete = this.selected.pop()?._id;
         await $axios
-          .delete(`api/utcak/${id_for_delete}`)
+          .delete(`api/temakorok/${id_for_delete}`)
           .then(() => {
             Loading.hide();
             Notify.create({
@@ -203,17 +199,17 @@ export const useUtcakStore = defineStore({
         Loading.show();
         // delete this.data.category;
         $axios
-          .post("api/utcak", this.data)
+          .post("api/temakorok", this.data)
           .then((res) => {
             Loading.hide();
             if (res && res.data) {
               // this.data = {};
               // this.getAll();
               Notify.create({
-                message: `New document with id=${res.data._id} has been saved successfully!`,
+                message: `New document with id=${res.data._id} has been temaed successfully!`,
                 color: "positive",
               });
-              router.push("/qtable");
+              router.push("/qtablecategory");
               // router.push({ name: "page_name" });
             }
           })

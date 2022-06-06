@@ -13,7 +13,7 @@ interface IAddress {
   _id: string;
   city: string;
   country: string;
-  street: string;
+  Question: string;
 }
 
 interface IUser {

@@ -48,9 +48,19 @@
   const links = ref([
     {
       icon: "mdi-github",
-      text: "GitHub repo",
+      text: "GitHub repo frontend",
       name: "",
-      link: "https://github.com/nitslaszlo/jedlik-vite-quasar-template",
+      link: "https://github.com",
+      disabled: false,
+      separator: false,
+    },
+  ]);
+  const links2 = ref([
+    {
+      icon: "mdi-github",
+      text: "GitHub repo backend",
+      name: "",
+      link: "https://github.com/",
       disabled: false,
       separator: false,
     },
@@ -71,7 +81,7 @@
             <q-avatar>
               <img src="./assets/Jedlik_small.png" />
             </q-avatar>
-            Építményadó 2022.05.16 (hu) -
+            Szamok (hu) -
             {{ usersStore.loggedUser ? usersStore.loggedUser?.name : $t("noUser") }}
           </q-toolbar-title>
           <q-btn flat icon="mdi-comment-text-multiple" @click="toggleLanguage">
@@ -104,17 +114,44 @@
               </q-item>
               <q-separator v-if="menuItem.separator" :key="'sep' + index" />
             </template>
-            <q-item clickable :disable="usersStore.loggedUser == null" :to="{ name: 'qtable' }">
+            <q-item
+              clickable
+              :disable="usersStore.loggedUser == null"
+              :to="{ name: 'qtablequestion' }"
+            >
               <q-item-section avatar>
                 <q-icon name="mdi-table" />
               </q-item-section>
-              <q-item-section>Edit data</q-item-section>
+              <q-item-section>Edit Question</q-item-section>
+            </q-item>
+            <q-item
+              clickable
+              :disable="usersStore.loggedUser == null"
+              :to="{ name: 'qtablecategory' }"
+            >
+              <q-item-section avatar>
+                <q-icon name="mdi-table" />
+              </q-item-section>
+              <q-item-section>Edit Category</q-item-section>
             </q-item>
             <q-separator />
           </q-list>
           <!-- links: -->
           <q-list>
             <template v-for="(linkItem, index) in links" :key="index">
+              <q-item clickable :href="linkItem.link">
+                <q-item-section avatar>
+                  <q-icon :name="linkItem.icon" />
+                </q-item-section>
+                <q-item-section>
+                  {{ linkItem.text }}
+                </q-item-section>
+              </q-item>
+              <q-separator v-if="linkItem.separator" :key="'sep' + index" />
+            </template>
+          </q-list>
+          <q-list>
+            <template v-for="(linkItem, index) in links2" :key="index">
               <q-item clickable :href="linkItem.link">
                 <q-item-section avatar>
                   <q-icon :name="linkItem.icon" />
